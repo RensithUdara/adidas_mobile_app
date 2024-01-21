@@ -47,11 +47,26 @@ class AuthController {
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
     } on FirebaseAuthException catch (e) {
+      Logger().e(e.code);
       if (e.code == 'user-not-found') {
         Logger().e('No user found for that email.');
       } else if (e.code == 'wrong-password') {
         Logger().e('Wrong password provided for that user.');
       }
+    } catch (e) {
+      Logger().e(e);
+    }
+  }
+
+  Future<void> sendPasswordResetEmail(BuildContext context,
+      {required String email}) async {
+    try {
+      await FirebaseAuth.instance
+          .sendPasswordResetEmail(email: email)
+          .then((value) {
+        Navigator.pop(context);
+        Logger().f("Email sent.");
+      });
     } catch (e) {
       Logger().e(e);
     }

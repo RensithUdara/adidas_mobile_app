@@ -9,6 +9,9 @@ class SignInStateProvider extends ChangeNotifier {
   final TextEditingController _passwordController = TextEditingController();
   TextEditingController get passwordController => _passwordController;
 
+  final TextEditingController _resetEmailController = TextEditingController();
+  TextEditingController get resetEmailController => _resetEmailController;
+
   AuthController authController = AuthController();
 
   Future<void> startSignIn() async {
@@ -21,5 +24,9 @@ class SignInStateProvider extends ChangeNotifier {
     } else {
       Logger().e("Please Insert Email & Password");
     }
+  }
+
+  Future<void> startSendResetEmail(BuildContext context) async {
+    authController.sendPasswordResetEmail(context , email: _resetEmailController.text);
   }
 }
